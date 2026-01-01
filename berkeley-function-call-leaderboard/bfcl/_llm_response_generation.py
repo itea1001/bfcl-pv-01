@@ -18,6 +18,7 @@ from bfcl.constants.eval_config import (
 from bfcl.eval_checker.eval_runner_helper import load_file
 from bfcl.constants.model_config import MODEL_CONFIG_MAPPING
 from bfcl.model_handler.model_style import ModelStyle
+from bfcl.model_handler.utils import set_prompt_variation
 from bfcl.utils import is_multi_turn, parse_test_category_argument, sort_key
 from tqdm import tqdm
 
@@ -264,6 +265,11 @@ def generate_results(args, model_name, test_cases_total):
 
 
 def main(args):
+
+    # Set the global prompt variation
+    if hasattr(args, 'prompt_variation'):
+        set_prompt_variation(args.prompt_variation)
+        print(f"Using prompt variation: {args.prompt_variation}")
 
     if type(args.model) is not list:
         args.model = [args.model]

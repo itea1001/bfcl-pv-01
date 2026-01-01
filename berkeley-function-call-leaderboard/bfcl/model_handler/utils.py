@@ -12,7 +12,31 @@ from bfcl.constants.type_mappings import GORILLA_TO_OPENAPI
 from bfcl.model_handler.model_style import ModelStyle
 from bfcl.model_handler.parser.java_parser import parse_java_function_call
 from bfcl.model_handler.parser.js_parser import parse_javascript_function_call
+from bfcl.model_handler.parser.json_parser import parse_json_function_call
 from bfcl.model_handler.parser.xml_parser import parse_xml_function_call
+
+# Import prompt variations
+try:
+    from bfcl.constants.prompt_variations import PROMPT_VARIATIONS
+except ImportError:
+    # Fallback if prompt_variations doesn't exist yet
+    PROMPT_VARIATIONS = None
+
+# Global variable to store the current prompt variation
+_CURRENT_PROMPT_VARIATION = "python"
+
+
+def set_prompt_variation(variation: str):
+    """Set the global prompt variation to use."""
+    global _CURRENT_PROMPT_VARIATION
+    if PROMPT_VARIATIONS and variation not in PROMPT_VARIATIONS:
+        raise ValueError(f"Invalid prompt variation: {variation}. Must be one of {list(PROMPT_VARIATIONS.keys())}")
+    _CURRENT_PROMPT_VARIATION = variation
+
+
+def get_prompt_variation():
+    """Get the current prompt variation."""
+    return _CURRENT_PROMPT_VARIATION
 from tenacity import (
     retry,
     retry_if_exception_message,
@@ -239,6 +263,8 @@ def ast_parse(input_str, language="Python"):
         )  # Remove the [ and ] from the string
     elif language == "JavaScript":
         return parse_javascript_function_call(input_str[1:-1])
+    elif language == "JSON":
+        return parse_json_function_call(input_str)
     elif language == "XML":
         return parse_xml_function_call(input_str)
     else:
@@ -315,7 +341,12 @@ def system_prompt_pre_processing_chat_model(prompts, function_docs, test_categor
     """
     assert type(prompts) == list
 
-    system_prompt_template = DEFAULT_SYSTEM_PROMPT
+    # Get the appropriate system prompt based on the current variation
+    variation = get_prompt_variation()
+    if PROMPT_VARIATIONS and variation in PROMPT_VARIATIONS:
+        system_prompt_template = PROMPT_VARIATIONS[variation]["system_prompt"]
+    else:
+        system_prompt_template = DEFAULT_SYSTEM_PROMPT
 
     system_prompt = system_prompt_template.format(functions=function_docs)
 
