@@ -24,12 +24,12 @@ JSON_FORMAT_INSTRUCTION = """
 If you decide to invoke any of the function(s), you MUST return them in JSON format. Use one of the following structures:
 
 For a single function call:
-{"function_name": "func_name", "parameters": {"param1": "value1", "param2": "value2"}}
+{{"function_name": "func_name", "parameters": {{"param1": "value1", "param2": "value2"}}}}
 
 For multiple function calls:
 [
-  {"function_name": "func_name1", "parameters": {"param1": "value1"}},
-  {"function_name": "func_name2", "parameters": {"param2": "value2"}}
+  {{"function_name": "func_name1", "parameters": {{"param1": "value1"}}}},
+  {{"function_name": "func_name2", "parameters": {{"param2": "value2"}}}}
 ]
 
 You SHOULD NOT include any other text in the response. Return ONLY the JSON.

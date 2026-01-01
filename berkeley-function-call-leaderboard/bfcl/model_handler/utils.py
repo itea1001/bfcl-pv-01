@@ -37,6 +37,24 @@ def set_prompt_variation(variation: str):
 def get_prompt_variation():
     """Get the current prompt variation."""
     return _CURRENT_PROMPT_VARIATION
+
+
+def get_system_prompt_template():
+    """Get the system prompt template for the current prompt variation."""
+    if PROMPT_VARIATIONS is None:
+        # Fallback to default if prompt_variations is not available
+        from bfcl.constants.default_prompts import DEFAULT_SYSTEM_PROMPT
+        return DEFAULT_SYSTEM_PROMPT + "\n{functions}\n"
+    return PROMPT_VARIATIONS[_CURRENT_PROMPT_VARIATION]["system_prompt"]
+
+
+def get_parser_language():
+    """Get the parser language for the current prompt variation."""
+    if PROMPT_VARIATIONS is None:
+        return "Python"  # Default fallback
+    return PROMPT_VARIATIONS[_CURRENT_PROMPT_VARIATION]["parser_language"]
+
+
 from tenacity import (
     retry,
     retry_if_exception_message,
@@ -341,13 +359,8 @@ def system_prompt_pre_processing_chat_model(prompts, function_docs, test_categor
     """
     assert type(prompts) == list
 
-    # Get the appropriate system prompt based on the current variation
-    variation = get_prompt_variation()
-    if PROMPT_VARIATIONS and variation in PROMPT_VARIATIONS:
-        system_prompt_template = PROMPT_VARIATIONS[variation]["system_prompt"]
-    else:
-        system_prompt_template = DEFAULT_SYSTEM_PROMPT
-
+    # Get the appropriate system prompt template based on the current variation
+    system_prompt_template = get_system_prompt_template()
     system_prompt = system_prompt_template.format(functions=function_docs)
 
     # System prompt must be in the first position
@@ -708,12 +721,15 @@ def format_execution_results_prompting(
     return repr(tool_results)
 
 
-def default_decode_ast_prompting(result, language="Python"):
+def default_decode_ast_prompting(result, language=None):
     result = result.strip("`\n ")
     if not result.startswith("["):
         result = "[" + result
     if not result.endswith("]"):
         result = result + "]"
+    # If no language is explicitly provided, use the parser language from the current prompt variation
+    if language is None:
+        language = get_parser_language()
     decoded_output = ast_parse(result, language)
     return decoded_output
 
@@ -724,7 +740,9 @@ def default_decode_execute_prompting(result):
         result = "[" + result
     if not result.endswith("]"):
         result = result + "]"
-    decoded_output = ast_parse(result)
+    # Use the parser language from the current prompt variation
+    language = get_parser_language()
+    decoded_output = ast_parse(result, language)
     return decoded_output_to_execution_list(decoded_output)
 
 
