@@ -249,13 +249,28 @@ def evaluate(
         "--score-dir",
         help="Relative path to the evaluation score folder, if different from the default; Path should be relative to the `berkeley-function-call-leaderboard` root folder",
     ),
+    prompt_variation: str = typer.Option(
+        None,
+        "--prompt-variation",
+        help="The prompt variation used for generation. Options: 'python', 'json', 'xml'. If specified, automatically sets result_dir to result_{variation}/ and score_dir to score_{variation}/.",
+    ),
 ):
     """
     Evaluate results from run of one or more models on a test-category (same as eval_runner.py).
     """
 
     load_dotenv(dotenv_path=DOTENV_PATH, verbose=True, override=True)  # Load the .env file
-    evaluation_main(model, test_category, result_dir, score_dir)
+    
+    # If prompt_variation is specified, automatically set result_dir and score_dir
+    if prompt_variation:
+        if prompt_variation not in ["python", "json", "xml"]:
+            raise ValueError(f"Invalid prompt variation '{prompt_variation}'. Must be one of: python, json, xml")
+        if result_dir is None:
+            result_dir = f"result_{prompt_variation}"
+        if score_dir is None:
+            score_dir = f"score_{prompt_variation}"
+    
+    evaluation_main(model, test_category, result_dir, score_dir, prompt_variation)
 
 
 @cli.command()
