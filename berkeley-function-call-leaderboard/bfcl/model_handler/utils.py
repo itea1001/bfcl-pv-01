@@ -723,13 +723,17 @@ def format_execution_results_prompting(
 
 def default_decode_ast_prompting(result, language=None):
     result = result.strip("`\n ")
-    if not result.startswith("["):
-        result = "[" + result
-    if not result.endswith("]"):
-        result = result + "]"
     # If no language is explicitly provided, use the parser language from the current prompt variation
     if language is None:
         language = get_parser_language()
+    
+    # XML and JSON don't need bracket wrapping - they have their own structure
+    if language not in ["XML", "JSON"]:
+        if not result.startswith("["):
+            result = "[" + result
+        if not result.endswith("]"):
+            result = result + "]"
+    
     decoded_output = ast_parse(result, language)
     return decoded_output
 

@@ -343,7 +343,7 @@ def ast_file_runner(
 
 
 #### Main runner function ####
-def runner(model_names, test_categories, result_dir, score_dir):
+def runner(model_names, test_categories, result_dir, score_dir, prompt_variation=None):
 
     # State udpated by each eval subtask.
     state = dict(
@@ -392,6 +392,7 @@ def runner(model_names, test_categories, result_dir, score_dir):
                 model_name,
                 handler,
                 state,
+                prompt_variation,
             )
 
     # This function reads all the score files from local folder and updates the
@@ -412,13 +413,25 @@ def evaluate_task(
     model_name,
     handler,
     state,
+    prompt_variation=None,
 ):
 
-    language = "Python"
-    if is_java(test_category):
-        language = "Java"
-    if is_js(test_category):
-        language = "JavaScript"
+    # Determine language based on prompt_variation or test_category
+    if prompt_variation:
+        # Map prompt variation to parser language
+        variation_to_language = {
+            "python": "Python",
+            "json": "JSON",
+            "xml": "XML"
+        }
+        language = variation_to_language.get(prompt_variation, "Python")
+    else:
+        # Default behavior based on test category
+        language = "Python"
+        if is_java(test_category):
+            language = "Java"
+        if is_js(test_category):
+            language = "JavaScript"
 
     print(f"🔍 Running test: {test_category}")
 
@@ -468,7 +481,7 @@ def evaluate_task(
     return state
 
 
-def main(model, test_categories, result_dir, score_dir):
+def main(model, test_categories, result_dir, score_dir, prompt_variation=None):
     if result_dir is None:
         result_dir = RESULT_PATH
     else:
@@ -496,7 +509,7 @@ def main(model, test_categories, result_dir, score_dir):
             model_names.append(model_name.replace("/", "_"))
 
     # Driver function to run the evaluation for all categories involved.
-    runner(model_names, all_test_categories, result_dir, score_dir)
+    runner(model_names, all_test_categories, result_dir, score_dir, prompt_variation)
 
     print(
         f"🏁 Evaluation completed. See {score_dir / 'data_overall.csv'} for overall evaluation results on BFCL V3."
