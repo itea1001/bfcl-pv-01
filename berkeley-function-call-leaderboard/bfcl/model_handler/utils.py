@@ -810,8 +810,11 @@ def default_decode_ast_prompting(result, language=None):
     if language is None:
         language = get_parser_language()
     
+    # Strip tool_call tags early if present (for tagged formats)
+    result = strip_tool_call_tags(result)
+    
     # XML and JSON don't need bracket wrapping - they have their own structure
-    if language not in ["XML", "JSON"]:
+    if language not in ["XML", "JSON", "XMLTagged", "JSONTagged"]:
         if not result.startswith("["):
             result = "[" + result
         if not result.endswith("]"):
@@ -823,12 +826,19 @@ def default_decode_ast_prompting(result, language=None):
 
 def default_decode_execute_prompting(result):
     result = result.strip("`\n ")
-    if not result.startswith("["):
-        result = "[" + result
-    if not result.endswith("]"):
-        result = result + "]"
     # Use the parser language from the current prompt variation
     language = get_parser_language()
+    
+    # Strip tool_call tags early if present (for tagged formats)
+    result = strip_tool_call_tags(result)
+    
+    # XML and JSON don't need bracket wrapping - they have their own structure
+    if language not in ["XML", "JSON", "XMLTagged", "JSONTagged"]:
+        if not result.startswith("["):
+            result = "[" + result
+        if not result.endswith("]"):
+            result = result + "]"
+    
     decoded_output = ast_parse(result, language)
     return decoded_output_to_execution_list(decoded_output)
 

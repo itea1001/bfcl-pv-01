@@ -428,8 +428,11 @@ def evaluate_task(
         # Map res_fmt to parser language
         variation_to_language = {
             "python": "Python",
+            "python_tagged": "PythonTagged",
             "json": "JSON",
-            "xml": "XML"
+            "json_tagged": "JSONTagged",
+            "xml": "XML",
+            "xml_tagged": "XMLTagged"
         }
         language = variation_to_language.get(res_fmt, "Python")
     else:
