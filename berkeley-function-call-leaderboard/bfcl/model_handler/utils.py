@@ -314,7 +314,34 @@ def convert_value(value, type_str):
         return value
 
 
+def strip_tool_call_tags(input_str):
+    """
+    Strip <tool_call> wrapper tags from the input string.
+    
+    Args:
+        input_str: String potentially wrapped in <tool_call></tool_call> tags
+        
+    Returns:
+        String with tags removed
+    """
+    input_str = input_str.strip()
+    if input_str.startswith("<tool_call>") and input_str.endswith("</tool_call>"):
+        return input_str[len("<tool_call>"):-len("</tool_call>")].strip()
+    return input_str
+
+
 def ast_parse(input_str, language="Python"):
+    # Handle tagged variants by stripping the wrapper tags first
+    if language in ["PythonTagged", "JSONTagged", "XMLTagged"]:
+        input_str = strip_tool_call_tags(input_str)
+        # Map to the base language for parsing
+        language_map = {
+            "PythonTagged": "Python",
+            "JSONTagged": "JSON",
+            "XMLTagged": "XML",
+        }
+        language = language_map[language]
+    
     if language == "Python":
         cleaned_input = input_str.strip("[]'")
         parsed = ast.parse(cleaned_input, mode="eval")
