@@ -22,21 +22,72 @@ except ImportError:
     # Fallback if prompt_variations doesn't exist yet
     PROMPT_VARIATIONS = None
 
-# Global variable to store the current prompt variation
+# Global variables to store the current prompt variation
 _CURRENT_PROMPT_VARIATION = "python"
+_CURRENT_RES_FMT = "python"
+_CURRENT_DOC_FMT = "json"
+
+
+def parse_prompt_variation(variation_str: str) -> dict:
+    """
+    Parse prompt variation string in format 'res_fmt=...,doc_fmt=...' or legacy format.
+    
+    Args:
+        variation_str: Either legacy format like 'python' or new format like 'res_fmt=json,doc_fmt=xml'
+    
+    Returns:
+        dict with 'res_fmt' and 'doc_fmt' keys
+    """
+    if "=" in variation_str:
+        # New format: res_fmt=json,doc_fmt=xml
+        parts = {}
+        for part in variation_str.split(","):
+            key, value = part.strip().split("=")
+            parts[key.strip()] = value.strip()
+        
+        res_fmt = parts.get("res_fmt", "python")
+        doc_fmt = parts.get("doc_fmt", "json")
+        return {"res_fmt": res_fmt, "doc_fmt": doc_fmt}
+    else:
+        # Legacy format: just a format name
+        return {"res_fmt": variation_str, "doc_fmt": "json"}
 
 
 def set_prompt_variation(variation: str):
-    """Set the global prompt variation to use."""
-    global _CURRENT_PROMPT_VARIATION
-    if PROMPT_VARIATIONS and variation not in PROMPT_VARIATIONS:
-        raise ValueError(f"Invalid prompt variation: {variation}. Must be one of {list(PROMPT_VARIATIONS.keys())}")
-    _CURRENT_PROMPT_VARIATION = variation
+    """
+    Set the global prompt variation to use.
+    
+    Args:
+        variation: Either legacy format like 'python' or new format like 'res_fmt=json,doc_fmt=xml'
+    """
+    global _CURRENT_PROMPT_VARIATION, _CURRENT_RES_FMT, _CURRENT_DOC_FMT
+    
+    parsed = parse_prompt_variation(variation)
+    res_fmt = parsed["res_fmt"]
+    doc_fmt = parsed["doc_fmt"]
+    
+    # Validate res_fmt
+    if PROMPT_VARIATIONS and res_fmt not in PROMPT_VARIATIONS:
+        raise ValueError(f"Invalid response format: {res_fmt}. Must be one of {list(PROMPT_VARIATIONS.keys())}")
+    
+    _CURRENT_PROMPT_VARIATION = res_fmt  # For backward compatibility
+    _CURRENT_RES_FMT = res_fmt
+    _CURRENT_DOC_FMT = doc_fmt
 
 
 def get_prompt_variation():
-    """Get the current prompt variation."""
+    """Get the current prompt variation (response format)."""
     return _CURRENT_PROMPT_VARIATION
+
+
+def get_res_fmt():
+    """Get the current response format."""
+    return _CURRENT_RES_FMT
+
+
+def get_doc_fmt():
+    """Get the current documentation format."""
+    return _CURRENT_DOC_FMT
 
 
 def get_system_prompt_template():
