@@ -43,8 +43,8 @@ For a single function call:
 <function_call>
     <name>func_name</name>
     <arguments>
-        <arg name="param1">value1</arg>
-        <arg name="param2">value2</arg>
+        <arg name="param1" type="string">value1</arg>
+        <arg name="param2" type="int">123</arg>
     </arguments>
 </function_call>
 
@@ -53,16 +53,19 @@ For multiple function calls:
     <function_call>
         <name>func_name1</name>
         <arguments>
-            <arg name="param1">value1</arg>
+            <arg name="param1" type="array">[1, 2, 3]</arg>
         </arguments>
     </function_call>
     <function_call>
         <name>func_name2</name>
         <arguments>
-            <arg name="param2">value2</arg>
+            <arg name="param2" type="float">3.14</arg>
         </arguments>
     </function_call>
 </function_calls>
+
+IMPORTANT: Always include the 'type' attribute for each argument. Supported types: string, int, float, bool, array, object.
+For array and object types, write the value in JSON format (e.g., [1, 2, 3] or {{"key": "value"}}).
 
 You SHOULD NOT include any other text in the response. Return ONLY the XML.
 """
