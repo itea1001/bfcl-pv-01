@@ -410,9 +410,14 @@ def system_prompt_pre_processing_chat_model(prompts, function_docs, test_categor
     """
     assert type(prompts) == list
 
+    # Format function docs according to the doc_fmt setting
+    from bfcl.model_handler.func_doc_formatters import format_func_doc
+    doc_fmt = get_doc_fmt()
+    formatted_functions = format_func_doc(function_docs, doc_fmt)
+
     # Get the appropriate system prompt template based on the current variation
     system_prompt_template = get_system_prompt_template()
-    system_prompt = system_prompt_template.format(functions=function_docs)
+    system_prompt = system_prompt_template.format(functions=formatted_functions)
 
     # System prompt must be in the first position
     # If the question comes with a system prompt, append its content at the end of the chat template.
