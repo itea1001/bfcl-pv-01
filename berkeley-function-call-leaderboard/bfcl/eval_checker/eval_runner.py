@@ -21,6 +21,7 @@ from bfcl.eval_checker.multi_turn_eval.multi_turn_checker import (
 )
 from bfcl.eval_checker.multi_turn_eval.multi_turn_utils import is_empty_execute_response
 from bfcl.constants.model_config import MODEL_CONFIG_MAPPING
+from bfcl.model_handler.utils import set_prompt_variation, get_res_fmt
 from bfcl.utils import *
 from dotenv import load_dotenv
 from tqdm import tqdm
@@ -416,15 +417,21 @@ def evaluate_task(
     prompt_variation=None,
 ):
 
+    # Set prompt variation globally if provided
+    if prompt_variation:
+        set_prompt_variation(prompt_variation)
+    
     # Determine language based on prompt_variation or test_category
     if prompt_variation:
-        # Map prompt variation to parser language
+        # Get the response format from the prompt variation
+        res_fmt = get_res_fmt()
+        # Map res_fmt to parser language
         variation_to_language = {
             "python": "Python",
             "json": "JSON",
             "xml": "XML"
         }
-        language = variation_to_language.get(prompt_variation, "Python")
+        language = variation_to_language.get(res_fmt, "Python")
     else:
         # Default behavior based on test category
         language = "Python"
