@@ -144,9 +144,10 @@ def generate(
         "python",
         "--prompt-variation",
         help="The prompt variation to use. Format: 'res_fmt=FORMAT,doc_fmt=FORMAT' or legacy 'FORMAT'. "
-             "Response formats (res_fmt): 'python' (default), 'json', 'xml', 'xml_typed'. "
+             "Response formats (res_fmt): 'python' (default), 'json', 'xml', 'xml_typed', 'python_tagged', 'json_tagged', 'xml_tagged'. "
+             "Tagged formats wrap function calls in <tool_call></tool_call> tags. "
              "Doc formats (doc_fmt): 'json' (default), 'python', 'xml'. "
-             "Example: 'res_fmt=json,doc_fmt=xml' or just 'json' for legacy.",
+             "Example: 'res_fmt=json_tagged,doc_fmt=xml' or just 'json' for legacy.",
     ),
 ):
     """
@@ -272,8 +273,8 @@ def evaluate(
         parsed = parse_prompt_variation(prompt_variation)
         res_fmt = parsed["res_fmt"]
         
-        if res_fmt not in ["python", "json", "xml", "xml_typed"]:
-            raise ValueError(f"Invalid response format '{res_fmt}'. Must be one of: python, json, xml, xml_typed")
+        if res_fmt not in ["python", "json", "xml", "xml_typed", "python_tagged", "json_tagged", "xml_tagged"]:
+            raise ValueError(f"Invalid response format '{res_fmt}'. Must be one of: python, json, xml, xml_typed, python_tagged, json_tagged, xml_tagged")
         if result_dir is None:
             result_dir = f"result_{res_fmt}"
         if score_dir is None:
