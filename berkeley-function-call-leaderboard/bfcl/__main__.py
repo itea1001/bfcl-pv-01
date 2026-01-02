@@ -143,7 +143,10 @@ def generate(
     prompt_variation: str = typer.Option(
         "python",
         "--prompt-variation",
-        help="The prompt variation to use for function call format. Options: 'python' (default, original format), 'json', 'xml'.",
+        help="The prompt variation to use. Format: 'res_fmt=FORMAT,doc_fmt=FORMAT' or legacy 'FORMAT'. "
+             "Response formats (res_fmt): 'python' (default), 'json', 'xml', 'xml_typed'. "
+             "Doc formats (doc_fmt): 'json' (default), 'python', 'xml'. "
+             "Example: 'res_fmt=json,doc_fmt=xml' or just 'json' for legacy.",
     ),
 ):
     """
@@ -252,7 +255,9 @@ def evaluate(
     prompt_variation: str = typer.Option(
         None,
         "--prompt-variation",
-        help="The prompt variation used for generation. Options: 'python', 'json', 'xml'. If specified, automatically sets result_dir to result_{variation}/ and score_dir to score_{variation}/.",
+        help="The prompt variation used for generation. Format: 'res_fmt=FORMAT,doc_fmt=FORMAT' or legacy 'FORMAT'. "
+             "If specified, automatically sets result_dir and score_dir based on res_fmt. "
+             "Example: 'res_fmt=json,doc_fmt=xml' or just 'json'.",
     ),
 ):
     """
@@ -263,12 +268,16 @@ def evaluate(
     
     # If prompt_variation is specified, automatically set result_dir and score_dir
     if prompt_variation:
-        if prompt_variation not in ["python", "json", "xml"]:
-            raise ValueError(f"Invalid prompt variation '{prompt_variation}'. Must be one of: python, json, xml")
+        from bfcl.model_handler.utils import parse_prompt_variation
+        parsed = parse_prompt_variation(prompt_variation)
+        res_fmt = parsed["res_fmt"]
+        
+        if res_fmt not in ["python", "json", "xml", "xml_typed"]:
+            raise ValueError(f"Invalid response format '{res_fmt}'. Must be one of: python, json, xml, xml_typed")
         if result_dir is None:
-            result_dir = f"result_{prompt_variation}"
+            result_dir = f"result_{res_fmt}"
         if score_dir is None:
-            score_dir = f"score_{prompt_variation}"
+            score_dir = f"score_{res_fmt}"
     
     evaluation_main(model, test_category, result_dir, score_dir, prompt_variation)
 
