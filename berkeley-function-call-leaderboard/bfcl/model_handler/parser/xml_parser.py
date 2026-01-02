@@ -48,10 +48,11 @@ def parse_xml_function_call(source_code):
                 for arg in child:
                     if arg.tag == "arg":
                         arg_name = arg.get("name")
+                        arg_type = arg.get("type")
                         arg_value = arg.text.strip() if arg.text else ""
                         
-                        # Try to convert to appropriate type
-                        arg_value = convert_value(arg_value)
+                        # Try to convert to appropriate type using type attribute if available
+                        arg_value = convert_value(arg_value, arg_type)
                         
                         if arg_name:
                             # Named argument
@@ -74,8 +75,39 @@ def parse_xml_function_call(source_code):
         
         return {function_name: arguments}
     
-    def convert_value(value_str):
+    def convert_value(value_str, type_hint=None):
         """Convert string value to appropriate Python type."""
+        import json
+        
+        # If type hint is provided, use it
+        if type_hint:
+            type_hint = type_hint.lower()
+            if type_hint == "array" or type_hint == "list":
+                try:
+                    return json.loads(value_str)
+                except:
+                    return value_str
+            elif type_hint == "object" or type_hint == "dict":
+                try:
+                    return json.loads(value_str)
+                except:
+                    return value_str
+            elif type_hint == "int" or type_hint == "integer":
+                try:
+                    return int(value_str)
+                except:
+                    return value_str
+            elif type_hint == "float" or type_hint == "number":
+                try:
+                    return float(value_str)
+                except:
+                    return value_str
+            elif type_hint == "bool" or type_hint == "boolean":
+                return value_str.lower() == "true"
+            elif type_hint == "string" or type_hint == "str":
+                return value_str
+        
+        # Fallback to automatic type detection
         # Try to parse as boolean
         if value_str.lower() == "true":
             return True
