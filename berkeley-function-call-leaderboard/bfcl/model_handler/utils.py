@@ -14,6 +14,7 @@ from bfcl.model_handler.parser.java_parser import parse_java_function_call
 from bfcl.model_handler.parser.js_parser import parse_javascript_function_call
 from bfcl.model_handler.parser.json_parser import parse_json_function_call
 from bfcl.model_handler.parser.xml_parser import parse_xml_function_call
+from bfcl.model_handler.func_doc_formatters import format_func_doc
 
 # Import prompt variations
 try:
@@ -26,6 +27,13 @@ except ImportError:
 _CURRENT_PROMPT_VARIATION = "python"
 _CURRENT_RES_FMT = "python"
 _CURRENT_DOC_FMT = "json"
+_CURRENT_SYSTEM_PROMPT_TEMPLATE = None  # Cached system prompt template
+
+# Initialize the system prompt template
+if PROMPT_VARIATIONS:
+    _CURRENT_SYSTEM_PROMPT_TEMPLATE = PROMPT_VARIATIONS["python"]["system_prompt"]
+else:
+    _CURRENT_SYSTEM_PROMPT_TEMPLATE = DEFAULT_SYSTEM_PROMPT + "\n{functions}\n"
 
 
 def parse_prompt_variation(variation_str: str) -> dict:
@@ -60,7 +68,7 @@ def set_prompt_variation(variation: str):
     Args:
         variation: Either legacy format like 'python' or new format like 'res_fmt=json,doc_fmt=xml'
     """
-    global _CURRENT_PROMPT_VARIATION, _CURRENT_RES_FMT, _CURRENT_DOC_FMT
+    global _CURRENT_PROMPT_VARIATION, _CURRENT_RES_FMT, _CURRENT_DOC_FMT, _CURRENT_SYSTEM_PROMPT_TEMPLATE
     
     parsed = parse_prompt_variation(variation)
     res_fmt = parsed["res_fmt"]
@@ -73,6 +81,13 @@ def set_prompt_variation(variation: str):
     _CURRENT_PROMPT_VARIATION = res_fmt  # For backward compatibility
     _CURRENT_RES_FMT = res_fmt
     _CURRENT_DOC_FMT = doc_fmt
+    
+    # Cache the system prompt template
+    if PROMPT_VARIATIONS is None:
+        from bfcl.constants.default_prompts import DEFAULT_SYSTEM_PROMPT
+        _CURRENT_SYSTEM_PROMPT_TEMPLATE = DEFAULT_SYSTEM_PROMPT + "\n{functions}\n"
+    else:
+        _CURRENT_SYSTEM_PROMPT_TEMPLATE = PROMPT_VARIATIONS[res_fmt]["system_prompt"]
 
 
 def get_prompt_variation():
@@ -438,13 +453,11 @@ def system_prompt_pre_processing_chat_model(prompts, function_docs, test_categor
     assert type(prompts) == list
 
     # Format function docs according to the doc_fmt setting
-    from bfcl.model_handler.func_doc_formatters import format_func_doc
-    doc_fmt = get_doc_fmt()
+    doc_fmt = _CURRENT_DOC_FMT  # Use cached global instead of function call
     formatted_functions = format_func_doc(function_docs, doc_fmt)
 
-    # Get the appropriate system prompt template based on the current variation
-    system_prompt_template = get_system_prompt_template()
-    system_prompt = system_prompt_template.format(functions=formatted_functions)
+    # Use the cached system prompt template
+    system_prompt = _CURRENT_SYSTEM_PROMPT_TEMPLATE.format(functions=formatted_functions)
 
     # System prompt must be in the first position
     # If the question comes with a system prompt, append its content at the end of the chat template.
