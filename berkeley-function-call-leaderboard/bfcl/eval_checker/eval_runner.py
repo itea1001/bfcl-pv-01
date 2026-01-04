@@ -404,6 +404,21 @@ def runner(model_names, test_categories, result_dir, score_dir, prompt_variation
     generate_leaderboard_csv(
         state["leaderboard_table"], score_dir, model_names, test_categories
     )
+    
+    # Calculate and display prompt variation accuracy (average of 8 core categories)
+    prompt_variation_categories = [
+        'simple', 'multiple', 'parallel', 'parallel_multiple',
+        'live_simple', 'live_multiple', 'live_parallel', 'live_parallel_multiple'
+    ]
+    
+    for model_name, model_results in state["leaderboard_table"].items():
+        matching_categories = [cat for cat in prompt_variation_categories if cat in model_results]
+        if matching_categories:
+            total_accuracy = sum(model_results[cat]['accuracy'] for cat in matching_categories)
+            avg_accuracy = total_accuracy / len(matching_categories)
+            print(f"\n📊 Prompt Variation Accuracy ({model_name}): {avg_accuracy:.1%} (average across {len(matching_categories)} categories)")
+    
+    return state
 
 
 def evaluate_task(
