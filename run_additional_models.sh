@@ -1,11 +1,15 @@
 #!/bin/bash
 
-# Run experiments for additional models: reasoning models and latest preview
-# Models: o1-2024-12-17, o3-mini-2025-01-31, gpt-4.5-preview-2025-02-27
+# Run experiments for additional models: GPT-5 variants and reasoning models
+# Models: gpt-5, gpt-5-mini, gpt-5-nano, o1-2024-12-17, o3-mini-2025-01-31
+
+# Initialize conda
+source /home/mingxuanl/miniconda3/etc/profile.d/conda.sh
+conda activate BFCL1
 
 # OPENAI_API_KEY should be set in environment before running this script
 
-MODELS=("gpt-5-2025-08-07" "gpt-5-mini-2025-08-07" "gpt-5-nano-2025-08-07")
+MODELS=("gpt-5-2025-08-07" "gpt-5-mini-2025-08-07" "gpt-5-nano-2025-08-07" "o1-2024-12-17" "o3-mini-2025-01-31")
 CATEGORIES="simple,multiple,parallel,parallel_multiple,live_simple,live_multiple,live_parallel,live_parallel_multiple"  # 8 main prompting categories
 
 # Define all 18 variations
