@@ -167,9 +167,9 @@ class OpenAIHandler(BaseHandler):
     def _query_prompting(self, inference_data: dict):
         inference_data["inference_input_log"] = {"message": repr(inference_data["message"])}
 
-        # OpenAI reasoning models don't support temperature parameter
+        # OpenAI reasoning models and GPT-5 don't support temperature parameter
         # Beta limitation: https://platform.openai.com/docs/guides/reasoning/beta-limitations
-        if "o1" in self.model_name or "o3-mini" in self.model_name:
+        if "o1" in self.model_name or "o3-mini" in self.model_name or "gpt-5" in self.model_name:
             return self.generate_with_backoff(
                 messages=inference_data["message"],
                 model=self.model_name,
