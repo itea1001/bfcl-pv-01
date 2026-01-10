@@ -838,6 +838,18 @@ api_inference_model_map = {
         is_fc_model=False,
         underscore_to_dot=False,
     ),
+    "grok-4-0709": ModelConfig(
+        model_name="grok-4-0709",
+        display_name="Grok-4-0709 (Prompt)",
+        url="https://docs.x.ai/docs/models",
+        org="xAI",
+        license="Proprietary",
+        model_handler=GrokHandler,
+        input_price=3,
+        output_price=15,
+        is_fc_model=False,
+        underscore_to_dot=False,
+    ),
     "xiaoming-14B": ModelConfig(
         model_name="xiaoming-14B",
         display_name="xiaoming-14B (Prompt)",
