@@ -1,0 +1,24 @@
+{"id": "live_parallel_multiple_0-0-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 887, "output_token_count": 171, "latency": 1.7267053127288818}
+{"id": "live_parallel_multiple_1-1-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 1163, "output_token_count": 139, "latency": 2.460536241531372}
+{"id": "live_parallel_multiple_2-2-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 1611, "output_token_count": 125, "latency": 2.289462089538574}
+{"id": "live_parallel_multiple_3-2-1", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 1630, "output_token_count": 182, "latency": 4.872037887573242}
+{"id": "live_parallel_multiple_4-3-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 898, "output_token_count": 154, "latency": 3.04141902923584}
+{"id": "live_parallel_multiple_5-4-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 786, "output_token_count": 125, "latency": 2.683774709701538}
+{"id": "live_parallel_multiple_6-5-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 797, "output_token_count": 105, "latency": 1.5417296886444092}
+{"id": "live_parallel_multiple_7-6-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 880, "output_token_count": 139, "latency": 2.561819314956665}
+{"id": "live_parallel_multiple_8-7-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 1564, "output_token_count": 286, "latency": 5.607356786727905}
+{"id": "live_parallel_multiple_9-8-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 1772, "output_token_count": 167, "latency": 2.996875286102295}
+{"id": "live_parallel_multiple_10-9-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 2256, "output_token_count": 179, "latency": 3.3036975860595703}
+{"id": "live_parallel_multiple_11-10-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 1382, "output_token_count": 254, "latency": 2.8785717487335205}
+{"id": "live_parallel_multiple_12-10-1", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 1302, "output_token_count": 153, "latency": 4.15610933303833}
+{"id": "live_parallel_multiple_13-11-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 887, "output_token_count": 175, "latency": 2.7254385948181152}
+{"id": "live_parallel_multiple_14-12-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 869, "output_token_count": 175, "latency": 2.432507276535034}
+{"id": "live_parallel_multiple_15-13-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 902, "output_token_count": 136, "latency": 2.707625150680542}
+{"id": "live_parallel_multiple_16-14-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 759, "output_token_count": 109, "latency": 3.367898941040039}
+{"id": "live_parallel_multiple_17-15-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 1513, "output_token_count": 106, "latency": 3.3154406547546387}
+{"id": "live_parallel_multiple_18-16-0", "result": "<tool_call>\n</tool_call>", "input_token_count": 2096, "output_token_count": 175, "latency": 4.300604581832886}
+{"id": "live_parallel_multiple_19-16-1", "result": "<tool_call>\n</tool_call>", "input_token_count": 2090, "output_token_count": 177, "latency": 3.056927442550659}
+{"id": "live_parallel_multiple_20-17-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 2877, "output_token_count": 224, "latency": 3.581012487411499}
+{"id": "live_parallel_multiple_21-18-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 1046, "output_token_count": 174, "latency": 3.7613325119018555}
+{"id": "live_parallel_multiple_22-19-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 1733, "output_token_count": 140, "latency": 2.517306089401245}
+{"id": "live_parallel_multiple_23-20-0", "result": "<tool_call>\n<function_calls>\n    </function_calls>\n</tool_call>", "input_token_count": 755, "output_token_count": 263, "latency": 4.675786733627319}

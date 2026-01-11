@@ -1,0 +1,16 @@
+{"id": "live_parallel_0-0-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 661, "output_token_count": 131, "latency": 2.867125988006592}
+{"id": "live_parallel_1-0-1", "result": "<function_calls>\n    </function_calls>", "input_token_count": 667, "output_token_count": 132, "latency": 2.349137544631958}
+{"id": "live_parallel_2-0-2", "result": "<function_calls>\n    </function_calls>", "input_token_count": 669, "output_token_count": 132, "latency": 2.2384753227233887}
+{"id": "live_parallel_3-0-3", "result": "<function_calls>\n    </function_calls>", "input_token_count": 716, "output_token_count": 197, "latency": 4.786358833312988}
+{"id": "live_parallel_4-1-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 660, "output_token_count": 100, "latency": 2.195640802383423}
+{"id": "live_parallel_5-2-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 711, "output_token_count": 182, "latency": 2.684760570526123}
+{"id": "live_parallel_6-3-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 849, "output_token_count": 134, "latency": 2.335801362991333}
+{"id": "live_parallel_7-3-1", "result": "<function_calls>\n    </function_calls>", "input_token_count": 828, "output_token_count": 132, "latency": 2.307349920272827}
+{"id": "live_parallel_8-4-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 661, "output_token_count": 127, "latency": 3.416297197341919}
+{"id": "live_parallel_9-5-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 774, "output_token_count": 129, "latency": 2.0200343132019043}
+{"id": "live_parallel_10-6-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 868, "output_token_count": 286, "latency": 7.528144598007202}
+{"id": "live_parallel_11-7-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 837, "output_token_count": 393, "latency": 4.282296419143677}
+{"id": "live_parallel_12-8-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 780, "output_token_count": 586, "latency": 6.4806764125823975}
+{"id": "live_parallel_13-9-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 659, "output_token_count": 132, "latency": 2.1189820766448975}
+{"id": "live_parallel_14-10-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 648, "output_token_count": 132, "latency": 1.7541871070861816}
+{"id": "live_parallel_15-11-0", "result": "<function_calls>\n    </function_calls>", "input_token_count": 642, "output_token_count": 105, "latency": 1.8237295150756836}

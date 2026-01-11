@@ -10,8 +10,12 @@ conda activate BFCL1
 # Navigate to the leaderboard directory
 cd /home/mingxuanl/mingxuanl/simulation/brandonzhang/bfcl-pv-01/berkeley-function-call-leaderboard
 
-# Set Grok API key (should be set in environment before running this script)
-# export GROK_API_KEY=your_grok_api_key_here
+# Check if GROK_API_KEY is set
+if [ -z "$GROK_API_KEY" ]; then
+    echo "ERROR: GROK_API_KEY environment variable is not set"
+    echo "Please run: export GROK_API_KEY=your_grok_api_key_here"
+    exit 1
+fi
 
 # Define models, response formats, doc formats, and test categories
 MODELS=("grok-4-0709" "grok-3-beta" "grok-3-mini-beta")
@@ -41,8 +45,7 @@ for MODEL in "${MODELS[@]}"; do
                 --test-category "$CATEGORIES" \
                 --prompt-variation "$PROMPT_VARIATION" \
                 --result-dir "$RESULT_DIR" \
-                --num-threads 32 \
-                --allow-overwrite
+                --num-threads 16 
 
             if [ $? -ne 0 ]; then
                 echo "ERROR: Generation failed for $MODEL - $PROMPT_VARIATION"
